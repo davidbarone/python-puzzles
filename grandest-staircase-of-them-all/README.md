@@ -1,60 +1,125 @@
-# Kaprekar-6174
+# The Grandest Staircase Of Them All
 
 ## Problem
 
-Kaprekar's constant is 6174, named after the Indian mathematician who first discovered this property:
+*This puzzle came from the Google FooBar site where it was a level 3 problem.*
 
-- Take any four-digit number, using at least two different digits (leading zeros are allowed).
-- Arrange the digits in descending and then in ascending order to get two four-digit numbers, adding leading zeros if necessary.
-- Subtract the smaller number from the bigger number.
-- Go back to step 2 and repeat.
+With her LAMBCHOP doomsday device finished, Commander Lambda is preparing for her debut on the galactic stage - but in order to make a grand entrance, she needs a grand staircase! As her personal assistant, you've been tasked with figuring out how to build the best staircase EVER.
 
-The above process, known as Kaprekar's routine, will always reach its fixed point, 6174, in at most 7 iterations.
+Lambda has given you an overview of the types of bricks available, plus a budget. You can buy different amounts of the different types of bricks (for example, 3 little pink bricks, or 5 blue lace bricks). Commander Lambda wants to know how many different types of staircases can be built with each amount of bricks, so she can pick the one with the most options.
 
-Write a function which accepts a 4 digit number represented as a string, and returns the number of iterations to get to '6174'. If a number is passed in which is not solvable (where all digits are the same), return -1.
-
-## Test Cases
+Each type of staircase should consist of 2 or more steps. No two steps are allowed to be at the same height - each step must be lower than the previous one. All steps must contain at least one brick. A step's height is classified as the total amount of bricks that make up that step.
+For example, when N = 3, you have only 1 choice of how to build the staircase, with the first step having a height of 2 and the second step having a height of 1: (# indicates a brick)
 
 ```
-solution('5432')
-# 3
+#
+##
+21
+```
 
-solution('0001')
-# 5
+When N = 4, you still only have 1 staircase choice:
 
-solution('6174')
-# 0
+```
+#
+#
+##
+31
+```
 
-solution('5555')
-# -1
+But when N = 5, there are two ways you can build a staircase from the given bricks. The two staircases can have heights (4, 1) or (3, 2), as shown below:
+
+```
+#
+#
+#
+##
+41
+
+#
+##
+##
+32
+```
+
+Write a function called solution(n) that takes a positive integer n and returns the number of different staircases that can be built from exactly n bricks. n will always be at least 3 (so you can have a staircase at all), but no more than 200, because Commander Lambda's not made of money!
+
+## Test cases
+
+```
+Input:
+solution.solution(200)
+Output:
+487067745
+
+Input:
+solution.solution(3)
+Output:
+1
 ```
 
 ## Solution
 
-``` python
-def solution(number):
-    return solutionEx(number, 0)
+```python
+#################################
+# The Grandest Staircase Of All:
+# Test Cases:
+#   n    result
+# --- ---------
+#   3         1
+#   4         1
+#   5         2
+#   6         3
+#   7         4
+#   8         5
+#   9         7
+#  10         9
+#  11        11
+#  12        14
+# 100    444792
+# 200 487067745
+#################################
+def solutionEx(availableBricks, currentMaxHeight = None, state = {}):
+    if currentMaxHeight == None:
+        # Initialise things
+        currentMaxHeight = availableBricks
+        state["result"] = 0
+        # Create cache to store results of calculations to speed things up
+        # Indexed as [available bricks][max height]
+        state["cache"] = []
+        for x in range(availableBricks + 1):
+            state["cache"].append([None] * (availableBricks + 1))
 
-def solutionEx(number, iteration):
-    
-    if (number == '6174'):
-        return iteration
-    
-    s = list(number)
-    s.sort(reverse = True)
-    biggest = int(''.join(s))
-    s.sort()
-    smallest = int(''.join(s))
-    diff = biggest - smallest
-    if diff == 0:
-        return -1
-    elif diff == int(number):
-        return iteration
-    else:
-        return solutionEx(str(diff).rjust(4,'0'), iteration + 1)
-    
-assert solution('5432') == 3
-assert solution('0001') == 5
-assert solution('6174') == 0
-assert solution('5555') == -1
+    if availableBricks == 1 and currentMaxHeight > 1:
+        # Valid stairway as no more bricks
+        state["result"] = state["result"] + 1
+        return state
+    elif currentMaxHeight <= 1 and availableBricks >= 1:
+        # error condition - unused bricks remaining, but cannot make any more steps.
+        return state
+    for x in range(1, currentMaxHeight):
+        nextAvailableBricks = availableBricks - x
+        if nextAvailableBricks == 0:
+            # Valid stairway as no more bricks
+            state["result"] = state["result"] + 1
+            break
+
+        # recursive bit (with caching)
+        cache = state["cache"][nextAvailableBricks][x]
+        if cache != None:
+            state["result"] = state["result"] + cache
+        else:
+            before = state["result"]
+            solutionEx(nextAvailableBricks, x, state)
+            after = state["result"]
+            diff = after - before
+            state["cache"][nextAvailableBricks][x] = diff
+
+    return state
+
+def solution(n):
+    state = solutionEx(n)
+    return state["result"]
+
+assert solution(200) == 487067745
+assert solution(3) == 1
 ```
