@@ -254,7 +254,7 @@ This algorithm works by generating every single permutation of the grid of dimen
 
 ### Group Theory
 
-The area of mathematics is known as 'Group Theory' (https://en.wikipedia.org/wiki/Group_theory). As usual, with most things mathematical, there are a number of definitions and symbols which are required to be understood first. A good summary of all the mathematical notation can be found at:
+The area of mathematics useful to us here is known as 'Group Theory' (https://en.wikipedia.org/wiki/Group_theory). As usual, with most things mathematical, there are a number of definitions and symbols which are required to be understood first. A good summary of all the mathematical notation can be found at:
 
 https://en.wikipedia.org/wiki/List_of_mathematical_symbols_by_subject
 
@@ -347,8 +347,28 @@ This means:
 
 We represent this cycle by writing:
 
-$$
-\(x_2^3\
-$$
+$$x_2^3$$
+
+This can be read as '3 cycles of length 2'.
+
+Another example (although not relevant for this question), is describing the cycle index for rotating the 2x2 grid 90 degrees. For example:
+
+```
+---------        ---------
+| 1 | 2 |        | 4 | 1 |
+---------   =>   ---------
+| 4 | 3 |        | 3 | 2 |
+---------        ---------
+```
+
+This cycle would be written as (1234) and read as:
+
+`Move 1 to 2, 2 to 3, 3 to 4, and 4 back to 1`
+
+For the identity, we have 4 cycles each of length 1, which keep all the elements where they are:
+
+(1)(2)(3)(4)
+
+
 
 
