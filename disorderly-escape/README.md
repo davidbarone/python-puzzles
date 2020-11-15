@@ -347,7 +347,7 @@ This means:
 
 We represent this cycle by writing:
 
-$$x_2^3$$
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;x_2^3" />
 
 This can be read as '3 cycles of length 2'.
 
@@ -377,10 +377,9 @@ Therefore, using the reflection example of the set of 6 elements above (with 3 c
 
 In general, if G is a permutation group acting on set, X, then the cycle polynomial of G is:
 
-$$
-P_{(G,X)}(x_1, ..., x_n) = \frac{1}{G}\sum_{g\in G}
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;P_{(G,X)}(x_1, ..., x_n) = \frac{1}{G}\sum_{g\in G}
 x_1^{j_1(g)} ... x_n^{j_n(g)}
-$$
+" />
 
 where `j_k(g)` is the number of cycles of length `k` in the permutation `g`.
 
@@ -394,3 +393,5 @@ Using this on our original 2x2x2 problem, and counting cycles:
 | col + row | (ad)(bc)     | 2 ^ 2 = 4  |
 
 ### Calculating the Cycle Index
+
+
