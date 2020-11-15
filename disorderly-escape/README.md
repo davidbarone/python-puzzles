@@ -351,6 +351,7 @@ We represent this cycle by writing:
 
 This can be read as '3 cycles of length 2'.
 
+
 Another example (although not relevant for this question), is describing the cycle index for rotating the 2x2 grid 90 degrees. For example:
 
 ```
@@ -377,9 +378,7 @@ Therefore, using the reflection example of the set of 6 elements above (with 3 c
 
 In general, if G is a permutation group acting on set, X, then the cycle polynomial of G is:
 
-<img src="https://latex.codecogs.com/svg.latex?\Large&space;P_{(G,X)}(x_1, ..., x_n) = \frac{1}{G}\sum_{g\in G}
-x_1^{j_1(g)} ... x_n^{j_n(g)}
-" />
+<img src="https://latex.codecogs.com/svg.latex?\Large&space;P_{(G,X)}(x_1, ..., x_n) = \frac{1} {G}\sum_{g\in G} x_1^{j_1(g)} ... x_n^{j_n(g)}" />
 
 where `j_k(g)` is the number of cycles of length `k` in the permutation `g`.
 
