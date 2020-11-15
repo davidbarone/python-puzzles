@@ -377,7 +377,7 @@ Therefore, using the reflection example of the set of 6 elements above (with 3 c
 
 In general, if G is a permutation group acting on set, X, then the cycle polynomial of G is:
 
-<img src="https://latex.codecogs.com/svg.latex?P_{(G,X)}(x_1, ..., x_n) = \frac{1} {G}\sum_{g\in G} x_1^{j_1(g)} ... x_n^{j_n(g)}" />
+<img src="https://latex.codecogs.com/gif.latex?\bg_white&space;P_{(G,X)}(x_1,&space;...,&space;x_n)&space;=&space;\frac{1}{G}\sum_{g\in&space;G}&space;x_1^{j_1(g)}&space;...&space;x_n^{j_n(g)}" />
 
 where `j_k(g)` is the number of cycles of length `k` in the permutation `g`.
 
