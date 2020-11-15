@@ -299,7 +299,7 @@ We now need to count the number of permuations that would be fixed (remain uncha
 | col       | If swapping the columns, then c + d must be the same as a + b for the colouring to remain unchanged. Therefore we can choose any combination of a + b. | 2 ^ 2 = 4  |
 | col + row | If swapping both columns and rows, then a + d must be the same colour, as do b + c. Therefore we are free to choose any combination of 2 positions.    | 2 ^ 2 = 4  |
 
-The total number of fixed set members is 16 + 4 + 4 + 4 - 28
+The total number of fixed set members is 16 + 4 + 4 + 4 = 28
 
 Dividing by the group size, we get 28 / 4 = 7. This is the correct answer.
 
@@ -338,7 +338,7 @@ Polya captured the reason behind this and found an elegant way to describe it. T
 For example, if a set `123456` is transformed to `654321` (e.g. reflection) we can write the transform as 3 2-cycles:
 
 ```
-a = (16)(25)(34)
+s = (16)(25)(34)
 ```
 This means:
 - Move 1 to 6, and 6 back to 1
@@ -369,6 +369,28 @@ For the identity, we have 4 cycles each of length 1, which keep all the elements
 
 (1)(2)(3)(4)
 
+The important thing to note is that a permutation / action has no effect on a colouring if (and only if) each cycle consists of set elements of the same colour.
 
+Therefore, using the reflection example of the set of 6 elements above (with 3 cycles of length 2), then if there are 2 colour states for each position, there are:
 
+2^3 = 8 ways to colour 6 elements so that the reflection transformation described above has no effect.
 
+In general, if G is a permutation group acting on set, X, then the cycle polynomial of G is:
+
+$$
+P_{(G,X)}(x_1, ..., x_n) = \frac{1}{G}\sum_{g\in G}
+x_1^{j_1(g)} ... x_n^{j_n(g)}
+$$
+
+where `j_k(g)` is the number of cycles of length `k` in the permutation `g`.
+
+Using this on our original 2x2x2 problem, and counting cycles:
+
+| g         | Cycles       | Fix(g)     |
+| --------- | ------------ | ---------- |
+| e         | (a)(b)(c)(d) | 2 ^ 4 = 16 |
+| row       | (ac)(bd)     | 2 ^ 2 = 4  |
+| col       | (ab)(cd)     | 2 ^ 2 = 4  |
+| col + row | (ad)(bc)     | 2 ^ 2 = 4  |
+
+### Calculating the Cycle Index
