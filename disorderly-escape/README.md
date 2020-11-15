@@ -261,7 +261,7 @@ https://en.wikipedia.org/wiki/List_of_mathematical_symbols_by_subject
 The following can be determined from the question:
 
 - Each cellestial body (w x h x s) can be viewed as an element of a set, `S`
-- Given dimensions of (w x h x s), there are `s^(wh)` unique permutations
+- Given dimensions of (w x h x s), there are `s^(wh)` unique permutations. Each permutation can be thought of as a unique 'colouring' with each grid location being coloured by one of `s` colours.
 - The question defines rules that define how 2 or more configurations can be deemed to be equivalent (i.e. by swapping rows and/or columns). The transformation processes of swapping rows and/or columns) constitute a group.
 - A group can be viewed as a bunch of actions that apply to a set
 - The problem requires us to calculate the number of 'equivalent' configurations (taking into account the group transformations). These are know as equivalence classes or 'orbits'.
@@ -292,9 +292,17 @@ We can apply the Burnside Counting Theorum to the 2x2x2 test case. This test cas
 We now need to count the number of permuations that would be fixed (remain unchanged) after each group element is applied:
 
 
-| g     | Description             | Fix(g)     |
-| ----- | ----------------------- | ---------- |
-| e     | Identity (Does nothing) | 2 ^ 4 = 16 |
-| row ~ |
+| g         | Description                                                                                                                                            | Fix(g)     |
+| --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ | ---------- |
+| e         | Identity (Does nothing). All original set members are fixed.                                                                                           | 2 ^ 4 = 16 |
+| row       | If swapping the rows, then b + d must be the same as a + c for the colouring to remain unchanged. Therefore we can choose any combination of b + d.    | 2 ^ 2 = 4  |
+| col       | If swapping the columns, then c + d must be the same as a + b for the colouring to remain unchanged. Therefore we can choose any combination of a + b. | 2 ^ 2 = 4  |
+| col + row | If swapping both columns and rows, then a + d must be the same colour, as do b + c. Therefore we are free to choose any combination of 2 positions.    | 2 ^ 2 = 4  |
+
+The total number of fixed set members is 16 + 4 + 4 + 4 - 28
+
+Dividing by the group size, we get 28 / 4 = 7.
+
+
 
 - Identity: All original permutations are fixed as we don't change any of the positions
