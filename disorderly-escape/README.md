@@ -80,7 +80,9 @@ Output:
 ```
 ## Analysis
 
-Although it turns out that this problem requires a good understanding of graph theory and combinatorics, it is possible to solve this algorithmically in a simple brute-force program, albeit for the smallest grids only:
+### Writing a Brute-Force Solution
+
+Although it turns out that this problem ultimately requires a good understanding of graph theory and combinatorics to solve efficiently, it is possible to solve this using a relatively simple brute-force algorithm, albeit for the smallest grids only:
 
 ## Solution #1 (Brute Force Approach)
 
@@ -247,3 +249,32 @@ assert Grid(2,3,4).solve() == 430
 assert Grid(2,2,2).solve() == 7
 Grid(2,2,2).pretty()
 ```
+
+This algorithm works by generating every single permutation of the grid of dimension (w x h s), then calculating how many unique configurations there are by taking each permutation in turn, and applying each of the transformations in turn, to see if the resulting configuration has been 'seen' before. As you can imagine, this algorithm is incredibly inefficient, and only works for the smallest test cases. It does however work for the 2 provided test cases, and passes both. To solve the problem in a more powerful way, we need to resort to some mathematics theory.
+
+### Group Theory
+
+The area of mathematics is known as 'Group Theory' (https://en.wikipedia.org/wiki/Group_theory). As usual, with most things mathematical, there are a number of definitions and symbols which are required to be understood first. A good summary of all the mathematical notation can be found at:
+
+https://en.wikipedia.org/wiki/List_of_mathematical_symbols_by_subject
+
+The following can be determined from the question:
+
+- Each cellestial body (w x h x s) can be viewed as an element of a set, S
+- Given dimensions of (w x h x s), there are s ^ (w.h) unique permutations
+- The question defines rules that define how 2 or more configurations can be deemed to be equivalent (i.e. by swapping rows and/or columns). The transformation processes of swapping rows and/or columns) constitute a group.
+- A group can be viewed as a bunch of actions that apply to a set
+- The problem requires us to calculate the number of 'equivalent' configurations (taking into account the group transformations). These are know as equivalence classes or 'orbits'.
+
+### Burnside Counting Theorum
+
+The Burnside Lemma (or Burnside Counting Theorum) states that the number of orbits is equal to the average number of points fixed by an element of the group, G:
+
+https://en.wikipedia.org/wiki/Burnside%27s_lemma
+
+
+
+
+
+
+### Using Burnside 
