@@ -82,7 +82,7 @@ Output:
 
 ### Writing a Brute-Force Solution
 
-Although it turns out that this problem ultimately requires a good understanding of graph theory and combinatorics to solve efficiently, it is possible to solve this using a relatively simple brute-force algorithm, albeit for the smallest grids only:
+Although it turns out that this problem ultimately requires a good understanding of group theory and combinatorics to solve efficiently, it is possible to solve this using a relatively simple brute-force algorithm, albeit for the smallest grids only:
 
 ## Solution #1 (Brute Force Approach)
 
@@ -301,8 +301,54 @@ We now need to count the number of permuations that would be fixed (remain uncha
 
 The total number of fixed set members is 16 + 4 + 4 + 4 - 28
 
-Dividing by the group size, we get 28 / 4 = 7.
+Dividing by the group size, we get 28 / 4 = 7. This is the correct answer.
+
+### Polya Enumeration Theorum
+
+With the above 2x2x2 grid, it can be noticed that some permutations appear more than others. For example, the grids where all colours are the same (all 0's or all 1's) only appear once:
+
+```
+---------
+| 1 | 1 |
+---------
+| 1 | 1 |
+---------
+
+or
+
+---------
+| 1 | 1 |
+---------
+| 1 | 1 |
+---------
+```
+
+However, the grid with 3 zeros and a single '1' occur 4 times:
+
+```
+---------   ---------   ---------   ---------
+| 1 | 0 |   | 0 | 1 |   | 0 | 0 |   | 0 | 0 |
+---------   ---------   ---------   ---------
+| 0 | 0 |   | 0 | 0 |   | 1 | 0 |   | 0 | 1 |
+---------   ---------   ---------   ---------
+```
+
+Polya captured the reason behind this and found an elegant way to describe it. The key to solving the problem is to study the 'cycle structure' of the permutations.
+
+For example, if a set `123456` is transformed to `654321` (e.g. reflection) we can write the transform as 3 2-cycles:
+
+```
+a = (16)(25)(34)
+```
+This means:
+- Move 1 to 6, and 6 back to 1
+- Move 2 to 5, and 5 back to 2
+- Move 3 to 4, and 4 back to 3
+
+We represent this cycle by writing:
+
+$$
+\(x_2^3\
+$$
 
 
-
-- Identity: All original permutations are fixed as we don't change any of the positions
