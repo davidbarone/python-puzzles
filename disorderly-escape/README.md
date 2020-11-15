@@ -260,8 +260,8 @@ https://en.wikipedia.org/wiki/List_of_mathematical_symbols_by_subject
 
 The following can be determined from the question:
 
-- Each cellestial body (w x h x s) can be viewed as an element of a set, S
-- Given dimensions of (w x h x s), there are s ^ (w.h) unique permutations
+- Each cellestial body (w x h x s) can be viewed as an element of a set, `S`
+- Given dimensions of (w x h x s), there are `s^(wh)` unique permutations
 - The question defines rules that define how 2 or more configurations can be deemed to be equivalent (i.e. by swapping rows and/or columns). The transformation processes of swapping rows and/or columns) constitute a group.
 - A group can be viewed as a bunch of actions that apply to a set
 - The problem requires us to calculate the number of 'equivalent' configurations (taking into account the group transformations). These are know as equivalence classes or 'orbits'.
@@ -272,9 +272,29 @@ The Burnside Lemma (or Burnside Counting Theorum) states that the number of orbi
 
 https://en.wikipedia.org/wiki/Burnside%27s_lemma
 
+We can apply the Burnside Counting Theorum to the 2x2x2 test case. This test case contains a 2x2 grid. To assist describing the maths, I'll label the elements in this grid as follows:
+
+```
+---------
+| a | b |
+---------
+| c | d |
+---------
+```
+
+- The 2x2 grid has 4 elements in it. Each element can have 2 states (0 or 1)
+- There are 4 ways to transform the grid (hence 4 group members):
+  - We can leave all 4 grid elements unchanged (the identity)
+  - We can swap the rows (a + b swap with c + d)
+  - We can swap the columns (a + c swap with b + d)
+  - We can swap both rows and columns together (a + d swap, b + c swap)
+
+We now need to count the number of permuations that would be fixed (remain unchanged) after each group element is applied:
 
 
+| g     | Description             | Fix(g)     |
+| ----- | ----------------------- | ---------- |
+| e     | Identity (Does nothing) | 2 ^ 4 = 16 |
+| row ~ |
 
-
-
-### Using Burnside 
+- Identity: All original permutations are fixed as we don't change any of the positions
