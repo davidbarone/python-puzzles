@@ -15,7 +15,7 @@
     - [Solution #2](#solution-2)
   - [Bibliography](#bibliography)
 
-> *This puzzle came from the Google FooBar site where it was a level 5 problem. Please note that I still do not fully understand this problem. Since finding this problem on Google FooBar, I have been somewhat obsessed with understanding the maths involved, and this page is my poor attempt at documentating the research I've carried out. I'm not a trained mathematician, and the information below should not be relied on as being mathematically sound. Please let me know if I've explained anything incorrectly.*
+> *This puzzle came from the Google FooBar site where it was a level 5 problem. Please note that I still do not fully understand the theoretical details involved in this problem. Since finding this problem on Google FooBar, I have been somewhat obsessed with understanding the maths involved, and this page is my poor attempt at documentating the research I've carried out. I'm not a trained mathematician, and the information below should not be relied on as being mathematically sound. Please let me know if I've explained anything incorrectly.*
 
 ## Problem
 
@@ -269,6 +269,8 @@ This algorithm works by generating every single permutation of the grid of dimen
 
 ## Mathematical Approach
 
+In order to solve this problem for non-trivial use-cases, a mathematical approach is required. This involved some research on my part.
+
 ### Group Theory
 
 The area of mathematics useful to us here is known as 'Group Theory' (https://en.wikipedia.org/wiki/Group_theory). As usual, with most things mathematical, there are a number of definitions and symbols which are required to be understood first. A good summary of all the mathematical notation can be found at:
@@ -425,7 +427,7 @@ Note that the sum of the terms is also 24.
 
 ### Putting it all Together
 
-We loop through all partition permutations for both height + width. We calculate the cycle counts for the cycleW and cycleH inputs. Then we calculate the number of fixed permutations for the given partiion configuration using:
+We loop through all partition permutations for both height + width. We calculate the cycle counts for the cycleW and cycleH inputs. Then we calculate the number of fixed permutations for the given partition configuration using:
 
 ```
 total += cc * (s**sum([sum([gcd(i, j) for i in cycleW]) for j in cycleH]))
