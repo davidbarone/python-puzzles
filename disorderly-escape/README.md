@@ -1,8 +1,23 @@
 # Disorderly Escape
 
-## Problem
+- [Disorderly Escape](#disorderly-escape)
+  - [Problem](#problem)
+  - [Test cases](#test-cases)
+  - [Brute Force Approach](#brute-force-approach)
+    - [Analysis](#analysis)
+    - [Solution #1 (Brute Force Approach)](#solution-1-brute-force-approach)
+  - [Mathematical Approach](#mathematical-approach)
+    - [Group Theory](#group-theory)
+    - [Burnside Counting Theorum](#burnside-counting-theorum)
+    - [Polya Enumeration Theorum](#polya-enumeration-theorum)
+    - [Calculating the Cycle Index](#calculating-the-cycle-index)
+    - [Putting it all Together](#putting-it-all-together)
+    - [Solution #2](#solution-2)
+  - [Bibliography](#bibliography)
 
-*This puzzle came from the Google FooBar site where it was a level 5 problem.*
+> *This puzzle came from the Google FooBar site where it was a level 5 problem. Please note that I still do not fully understand this problem. Since finding this problem on Google FooBar, I have been somewhat obsessed with understanding the maths involved, and this page is my poor attempt at documentating the research I've carried out. I'm not a trained mathematician, and the information below should not be relied on as being mathematically sound. Please let me know if I've explained anything incorrectly.*
+
+## Problem
 
 Oh no! You've managed to free the bunny prisoners and escape Commander Lambdas exploding space station, but her team of elite starfighters has flanked your ship. If you dont jump to hyperspace, and fast, youll be shot out of the sky!
 
@@ -78,13 +93,13 @@ solution.solution(2, 2, 2)
 Output:
 7
 ```
-## Analysis
+## Brute Force Approach
 
-### Writing a Brute-Force Solution
+### Analysis
 
 Although it turns out that this problem ultimately requires a good understanding of group theory and combinatorics to solve efficiently, it is possible to solve this using a relatively simple brute-force algorithm, albeit for the smallest grids only:
 
-## Solution #1 (Brute Force Approach)
+### Solution #1 (Brute Force Approach)
 
 ```python
 import numpy as np
@@ -252,6 +267,8 @@ Grid(2,2,2).pretty()
 
 This algorithm works by generating every single permutation of the grid of dimension (w x h s), then calculating how many unique configurations there are by taking each permutation in turn, and applying each of the transformations in turn, to see if the resulting configuration has been 'seen' before. As you can imagine, this algorithm is incredibly inefficient, and only works for the smallest test cases. It does however work for the 2 provided test cases, and passes both. To solve the problem in a more powerful way, we need to resort to some mathematics theory.
 
+## Mathematical Approach
+
 ### Group Theory
 
 The area of mathematics useful to us here is known as 'Group Theory' (https://en.wikipedia.org/wiki/Group_theory). As usual, with most things mathematical, there are a number of definitions and symbols which are required to be understood first. A good summary of all the mathematical notation can be found at:
@@ -392,4 +409,122 @@ Using this on our original 2x2x2 problem, and counting cycles:
 
 ### Calculating the Cycle Index
 
+We need a way to generate the correct cycle index coefficients. If we have a set of 4 elements {1,2,3,4}, and each can take one of 2 values (0/1), we know there are 2^4 = 16 permutations in all. Therefore there are 16 group actions (including the identity) which can act on the 4 members:
 
+https://groupprops.subwiki.org/wiki/Symmetric_group:S4
+
+| Partition(s)  | Elements                                                                       | Term                                                |
+| ------------- | ------------------------------------------------------------------------------ | --------------------------------------------------- |
+| 4             | (1234), (1243), (1324), (1342), (1423), (1432)                                 | 6x<sub>4</sub><sup>1</sup>                          |
+| 3 + 1         | (123)(4), (132)(4), (234)(1), (243)(1), (341)(2), (314)(2), (412)(3), (421)(3) | 8x<sub>3</sub><sup>1</sup>x<sub>1</sub><sup>1</sup> |
+| 2 + 2         | (1,2)(3,4), (1,3)(2,4), (1,4)(2,3)                                             | 3x<sub>2</sub><sup>2</sup>                          |
+| 2 + 1 + 1     | (1,2)(3)(4), (1,3)(2)(4), (1,4)(2)(3), (2,3)(1)(4), (2,4)(1)(3), (3,4)(1)(2)   | 6x<sub>2</sub><sup>1</sup>x<sub>1</sub><sup>2</sup> |
+| 1 + 1 + 1 + 1 | (1)(2)(3)(4)                                                                   | 1x<sub>1</sub><sup>1</sup>                          |
+
+### Putting it all Together
+
+We loop through all partition permutations for both height + width. We calculate the cycle counts for the cycleW and cycleH inputs. Then we calculate the number of fixed permutations using:
+
+```
+total += cc * (s**sum([sum([gcd(i, j) for i in cycleW]) for j in cycleH]))
+```
+
+When calculating, we raise the number of states to the number of fixed elements in the grid - this is calculated by iterating through each of the partitions (cycleW and cycleH), and calculating the lowest common denominator - this gives us the size of the cycle common to both.
+
+Finally the total is averaged by dividing by the number of elements in the group, i.e. `w! x h!`
+
+### Solution #2
+
+A final solution could look something as follows (See bibliography for source articles that heavily assisted this solution):
+
+``` python
+from collections import Counter
+from math import gcd
+
+def fact(n):
+    """
+    Calculates factorial of a number n
+    """
+    if n == 0:
+        return 1
+    else:
+        return n * fact(n-1)
+
+def part(n, m = None):
+    """
+    Generates partitions for an integer n, with maximum summand, m.
+    """
+    results = []
+    if m == None:
+        m = n
+    if n == 1:
+        results.append([1])
+        return results
+    elif m == 1:
+        results.append([1] * n)
+        return results
+    else:
+        for i in range(m, 0, -1):
+            if i == n:
+                results.append([i])
+            elif i < n:
+                for result in part(n - i, i):
+                    results.append([i] + result)
+        return results
+
+def cycleCount(partition):
+    """
+    Gets the cycle count coefficient for a particular partition set. This can be used to build up the cycle index.
+    """
+    total = sum(partition)
+    cycle_count = fact(total)
+    for a, b in Counter(partition).items():
+        cycle_count //= (a**b) * fact(b)
+        
+    return cycle_count
+
+def solution(w, h, s):
+    """
+    Main entry point.
+    """
+    total = 0
+    for cycleW in part(w):
+        for cycleH in part(h):
+            cc = cycleCount(cycleW) * cycleCount(cycleH)
+            total += cc * (s**sum([sum([gcd(i, j) for i in cycleW]) for j in cycleH]))
+    
+    result = total // (fact(w) * fact(h))
+    return result
+
+# Tests
+
+assert fact(0) == 1
+assert fact(1) == 1
+assert fact(2) == 2
+assert fact(3) == 6
+assert fact(4) == 24
+assert fact(5) == 120
+
+assert cycleCount([4]) == 6
+assert cycleCount([3,1]) == 8
+assert cycleCount([2,2]) == 3
+assert cycleCount([2,1,1]) == 6
+assert cycleCount([1,1,1,1]) == 1
+
+assert solution(2,2,2) == 7
+assert solution(2,3,4) == 430
+
+assert solution(4,4,20) == 1137863754106723400
+assert solution(5,5,20) == 23301834615661488487765745000
+assert solution(6,6,20) == 132560781153101038829213988789736592649360
+assert solution(7,7,20) == 221619886894198821201872678876163305792210161226545392840
+assert solution(8,8,20) == 113469378614817897312718329989374518983724697432844009920312263602471667640
+```
+
+## Bibliography
+
+- https://en.wikipedia.org/wiki/Cycle_index
+- https://bogobogosort.wordpress.com/2018/03/30/completing-google-foobar/
+- https://groupprops.subwiki.org/wiki/Symmetric_group:S4
+- https://stackoverflow.com/questions/61689832/disorderly-escape-google-foobar-2020-not-passing-test-cases
+- https://www.sciencedirect.com/science/article/pii/0012365X9390015L
