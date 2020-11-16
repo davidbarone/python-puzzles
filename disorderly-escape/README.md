@@ -409,7 +409,7 @@ Using this on our original 2x2x2 problem, and counting cycles:
 
 ### Calculating the Cycle Index
 
-We need a way to generate the correct cycle index coefficients. If we have a set of 4 elements {1,2,3,4}, and each can take one of 2 values (0/1), we know there are 2^4 = 16 permutations in all. Therefore there are 16 group actions (including the identity) which can act on the 4 members:
+We need a way to generate the correct cycle index coefficients. If we have a set of 4 elements {1,2,3,4}, and each can take one of 2 values (0/1), we know there are 4! = 24 ways of arranging the 4 elements. Therefore there are 24 group actions (including the identity) which can act on the 4 members:
 
 https://groupprops.subwiki.org/wiki/Symmetric_group:S4
 
@@ -421,15 +421,17 @@ https://groupprops.subwiki.org/wiki/Symmetric_group:S4
 | 2 + 1 + 1     | (1,2)(3)(4), (1,3)(2)(4), (1,4)(2)(3), (2,3)(1)(4), (2,4)(1)(3), (3,4)(1)(2)   | 6x<sub>2</sub><sup>1</sup>x<sub>1</sub><sup>2</sup> |
 | 1 + 1 + 1 + 1 | (1)(2)(3)(4)                                                                   | 1x<sub>1</sub><sup>1</sup>                          |
 
+Note that the sum of the terms is also 24.
+
 ### Putting it all Together
 
-We loop through all partition permutations for both height + width. We calculate the cycle counts for the cycleW and cycleH inputs. Then we calculate the number of fixed permutations using:
+We loop through all partition permutations for both height + width. We calculate the cycle counts for the cycleW and cycleH inputs. Then we calculate the number of fixed permutations for the given partiion configuration using:
 
 ```
 total += cc * (s**sum([sum([gcd(i, j) for i in cycleW]) for j in cycleH]))
 ```
 
-When calculating, we raise the number of states to the number of fixed elements in the grid - this is calculated by iterating through each of the partitions (cycleW and cycleH), and calculating the lowest common denominator - this gives us the size of the cycle common to both.
+When calculating the number of fixed permutations, we raise the number of states to the number of element fixed in the grid - this is calculated by iterating through each of the partitions (cycleW and cycleH), and calculating the lowest common denominator - this gives us the size of the cycle common to both.
 
 Finally the total is averaged by dividing by the number of elements in the group, i.e. `w! x h!`
 
