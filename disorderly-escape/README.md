@@ -421,7 +421,7 @@ https://groupprops.subwiki.org/wiki/Symmetric_group:S4
 | 3 + 1         | (123)(4), (132)(4), (234)(1), (243)(1), (341)(2), (314)(2), (412)(3), (421)(3) | 8x<sub>3</sub><sup>1</sup>x<sub>1</sub><sup>1</sup> |
 | 2 + 2         | (1,2)(3,4), (1,3)(2,4), (1,4)(2,3)                                             | 3x<sub>2</sub><sup>2</sup>                          |
 | 2 + 1 + 1     | (1,2)(3)(4), (1,3)(2)(4), (1,4)(2)(3), (2,3)(1)(4), (2,4)(1)(3), (3,4)(1)(2)   | 6x<sub>2</sub><sup>1</sup>x<sub>1</sub><sup>2</sup> |
-| 1 + 1 + 1 + 1 | (1)(2)(3)(4)                                                                   | 1x<sub>1</sub><sup>1</sup>                          |
+| 1 + 1 + 1 + 1 | (1)(2)(3)(4)                                                                   | 1x<sub>1</sub><sup>4</sup>                          |
 
 Note that the sum of the terms is also 24.
 
