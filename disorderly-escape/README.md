@@ -336,9 +336,9 @@ With the above 2x2x2 grid, it can be noticed that some permutations appear more 
 or
 
 ---------
-| 1 | 1 |
+| 0 | 0 |
 ---------
-| 1 | 1 |
+| 0 | 0 |
 ---------
 ```
 
@@ -423,19 +423,39 @@ https://groupprops.subwiki.org/wiki/Symmetric_group:S4
 | 2 + 1 + 1     | (1,2)(3)(4), (1,3)(2)(4), (1,4)(2)(3), (2,3)(1)(4), (2,4)(1)(3), (3,4)(1)(2)   | 6x<sub>2</sub><sup>1</sup>x<sub>1</sub><sup>2</sup> |
 | 1 + 1 + 1 + 1 | (1)(2)(3)(4)                                                                   | 1x<sub>1</sub><sup>4</sup>                          |
 
-Note that the sum of the coefficients of the terms is also 24.
+Note that the sum of the coefficients of the terms is also 24. The cycle index is the result of combining all the above terms into a single polynomial expression. This polynomial describes how a group of permutations act on a set. If we know the cycle index polynomial, we can easily calculate the number of equivalence classes thus solving the problem.
 
 ### Putting it all Together
 
-We loop through all partition permutations for both height + width. We calculate the cycle counts for the cycleW and cycleH inputs. Then we calculate the number of fixed permutations for the given partition configuration using:
+For a given w and h, we create 2 nested loops, iterating through every combination of partitions for size w and h respectively. This will let us iterate through every combination of cycle lengths for the given grid.
+
+For example, if w is 3 and h is 5, then we cross calculate every cross-combination of:
+
+```
+[3]
+[2,1]
+[1,1,1]
+
+with
+
+[5]
+[4,1]
+[3,2]
+[3,1,1]
+[2,2,1]
+[2,1,1,1]
+[1,1,1,1,1]
+```
+
+For each combination of cycle length for w and h, we calculate the cycle counts for the corresponding cycleW and cycleH inputs. The cycle count is then used to calculate the number of permutations fixed by the 2 partition groups using:
 
 ```
 total += cc * (s**sum([sum([gcd(i, j) for i in cycleW]) for j in cycleH]))
 ```
 
-When calculating the number of fixed permutations, we raise the number of states to the number of element fixed in the grid - this is calculated by iterating through each of the partitions (cycleW and cycleH), and calculating the lowest common denominator - this gives us the size of the cycle common to both.
+When calculating the number of fixed permutations, we raise the number of states (s) to the number of element fixed in the grid - this is calculated by iterating through each of the partitions (cycleW and cycleH), and calculating the lowest common denominator - this gives us the size of the cycle common to both.
 
-Finally the total is averaged by dividing by the number of elements in the group, i.e. `w! x h!`
+Finally, once we loop through all the partition combinations, summing the total number of permutations fixed by the all the groups, the total is averaged by dividing by the number of elements in the group, which in our case is `w! x h!`.
 
 ### Solution #2
 
